@@ -1,0 +1,16 @@
+package com.example.ApiRest_Spa.controller;
+
+
+import com.example.spa_AdminPanel.service.ServicioService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api/servicios")
+public class ServicioController {
+
+    @Autowired
+    private ServicioService servicioService;
+
+}
