@@ -23,7 +23,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         if(path.equals("/api/auth/login") && method.equals("POST")) return true;
 
-        if(path.equals("/api/Usuairo") && method.equals("POST")) return true;
+        if(path.equals("/api/Usuario") && method.equals("POST")) return true;
 
         if(path.equals("/api/servicios") && method.equals("GET")) return true;
 
@@ -72,4 +72,3 @@ public class JwtFilter extends OncePerRequestFilter {
 
     }
 }
-
