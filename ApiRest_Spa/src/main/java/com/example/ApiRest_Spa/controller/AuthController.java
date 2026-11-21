@@ -39,14 +39,14 @@ public class AuthController {
                     .body("Usuario no encontrado");
         }
 
-        if (!passwordEncoder.matches(request.getPassword(), usuario.getPassword())) {
+        if (!passwordEncoder.matches(request.getPassword(), usuario.getContrasenia())) {
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
                     .body(Map.of("Error","Credenciales no coinciden"));
         }
 
-        String toke = jwtService.generateToken(usuario.getNombre());
-        return ResponseEntity.ok(new LoginResponse(toke));
+        String token = jwtService.generateToken(usuario.getNombre());
+        return ResponseEntity.ok(new LoginResponse(token));
     }
 
 }

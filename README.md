@@ -7,7 +7,7 @@
 El siguiente SQL agrega cinco usuarios a `Usuarios`. Las contraseñas para iniciar sesión son `SpaUser@2026` hasta `SpaUser@2030`, en el mismo orden:
 
 ```sql
-INSERT INTO Usuarios (fecha_registro, nombre, email, password)
+INSERT INTO usuarios(fecha_registro, nombre, email, contrasenia)
 VALUES
     (NOW(), 'UsuarioUno', 'usuario1@example.com', '$2a$10$XqReKhng9fF928s9yWMqseEkbG5V6qUlY7/NZ09R23VKMs2shoL6i'),
     (NOW(), 'UsuarioDos', 'usuario2@example.com', '$2a$10$mlQplF4vF5qsLzchWmlLG.kVgXFjVqrecidK.IZmD3PCvYfUkK2tG'),
@@ -15,23 +15,40 @@ VALUES
     (NOW(), 'UsuarioCuatro', 'usuario4@example.com', '$2a$10$Yfs5zLrzdMQhfq1lh1jmFOOoIUXaMMbNQ6McM8FMAiDRHf4sCKEq.'),
     (NOW(), 'UsuarioCinco', 'usuario5@example.com', '$2a$10$4NQij0Yh3HNnwKtCajFrpOeyj4jOF.hsTEZKz0fw/v9Bd6DM7mHV6');
 ```
-## Insertar sucursales, terapeutas y servicios
+## Insertar terapeutas
 
 Cada terapeuta comparte su identificador con un registro de `Usuarios` (`@MapsId` en la entidad `Terapeuta`). Por eso, primero inserta diez usuarios que servirán como cuentas de los terapeutas. En estos datos de prueba, todos usan la contraseña `SpaUser@2026`.
 
 ```sql
-INSERT INTO usuarios (fecha_registro, nombre, email, password)
+INSERT INTO usuarios(fecha_registro, nombre, email, password)
 VALUES
-    (NOW(), 'TerapeutaUno', 'terapeuta1@example.com', '4321_dcbA'),
-    (NOW(), 'TerapeutaDos', 'terapeuta2@example.com', '4321_dcbA'),
-    (NOW(), 'TerapeutaTres', 'terapeuta3@example.com', '4321_dcbA'),
-    (NOW(), 'TerapeutaCuatro', 'terapeuta4@example.com', '4321_dcbA'),
-    (NOW(), 'TerapeutaCinco', 'terapeuta5@example.com', '4321_dcbA'),
-    (NOW(), 'TerapeutaSeis', 'terapeuta6@example.com', '4321_dcbA'),
-    (NOW(), 'TerapeutaSiete', 'terapeuta7@example.com', '4321_dcbA'),
-    (NOW(), 'TerapeutaOcho', 'terapeuta8@example.com', '4321_dcbA'),
-    (NOW(), 'TerapeutaNueve', 'terapeuta9@example.com', '4321_dcbA'),
-    (NOW(), 'TerapeutaDiez', 'terapeuta10@example.com', '4321_dcbA');
+    (NOW(), 'TerapeutaUno', 'terapeuta1@example.com', '$2a$10$XqReKhng9fF928s9yWMqseEkbG5V6qUlY7/NZ09R23VKMs2shoL6i'),
+    (NOW(), 'TerapeutaDos', 'terapeuta2@example.com', '$2a$10$XqReKhng9fF928s9yWMqseEkbG5V6qUlY7/NZ09R23VKMs2shoL6i'),
+    (NOW(), 'TerapeutaTres', 'terapeuta3@example.com', '$2a$10$mlQplF4vF5qsLzchWmlLG.kVgXFjVqrecidK.IZmD3PCvYfUkK2tG'),
+    (NOW(), 'TerapeutaCuatro', 'terapeuta4@example.com', '$2a$10$mlQplF4vF5qsLzchWmlLG.kVgXFjVqrecidK.IZmD3PCvYfUkK2tG'),
+    (NOW(), 'TerapeutaCinco', 'terapeuta5@example.com', '$2a$10$R/ZkcB2fLh6JOEZ7DPWp9OoezBxYc1WxoA8muxE4nxLCnKvG0y.Ay'),
+    (NOW(), 'TerapeutaSeis', 'terapeuta6@example.com', '$2a$10$R/ZkcB2fLh6JOEZ7DPWp9OoezBxYc1WxoA8muxE4nxLCnKvG0y.Ay'),
+    (NOW(), 'TerapeutaSiete', 'terapeuta7@example.com', '$2a$10$Yfs5zLrzdMQhfq1lh1jmFOOoIUXaMMbNQ6McM8FMAiDRHf4sCKEq.'),
+    (NOW(), 'TerapeutaOcho', 'terapeuta8@example.com', '$2a$10$Yfs5zLrzdMQhfq1lh1jmFOOoIUXaMMbNQ6McM8FMAiDRHf4sCKEq.'),
+    (NOW(), 'TerapeutaNueve', 'terapeuta9@example.com', '$2a$10$4NQij0Yh3HNnwKtCajFrpOeyj4jOF.hsTEZKz0fw/v9Bd6DM7mHV6'),
+    (NOW(), 'TerapeutaDiez', 'terapeuta10@example.com', '$2a$10$4NQij0Yh3HNnwKtCajFrpOeyj4jOF.hsTEZKz0fw/v9Bd6DM7mHV6');
+```
+
+Crea los diez terapeutas. Las subconsultas los relacionan con el usuario y la sucursal por nombre, sin depender de que los IDs generados sean consecutivos:
+
+```sql
+INSERT INTO terapeutas(id_usuario, id_sucursal, fecha_contratacion)
+VALUES
+    ((SELECT id_usuario FROM usuarios WHERE nombre = 'TerapeutaUno'), (SELECT id_sucursal FROM sucursales WHERE nombre = 'Sucursal Centro'), '2024-01-15'),
+    ((SELECT id_usuario FROM usuarios WHERE nombre = 'TerapeutaDos'), (SELECT id_sucursal FROM sucursales WHERE nombre = 'Sucursal Centro'), '2024-02-01'),
+    ((SELECT id_usuario FROM usuarios WHERE nombre = 'TerapeutaTres'), (SELECT id_sucursal FROM sucursales WHERE nombre = 'Sucursal Centro'), '2024-03-10'),
+    ((SELECT id_usuario FROM usuarios WHERE nombre = 'TerapeutaCuatro'), (SELECT id_sucursal FROM sucursales WHERE nombre = 'Sucursal Norte'), '2024-01-20'),
+    ((SELECT id_usuario FROM usuarios WHERE nombre = 'TerapeutaCinco'), (SELECT id_sucursal FROM sucursales WHERE nombre = 'Sucursal Norte'), '2024-02-12'),
+    ((SELECT id_usuario FROM usuarios WHERE nombre = 'TerapeutaSeis'), (SELECT id_sucursal FROM sucursales WHERE nombre = 'Sucursal Norte'), '2024-03-05'),
+    ((SELECT id_usuario FROM usuarios WHERE nombre = 'TerapeutaSiete'), (SELECT id_sucursal FROM sucursales WHERE nombre = 'Sucursal Sur'), '2024-01-25'),
+    ((SELECT id_usuario FROM usuarios WHERE nombre = 'TerapeutaOcho'), (SELECT id_sucursal FROM sucursales WHERE nombre = 'Sucursal Sur'), '2024-02-18'),
+    ((SELECT id_usuario FROM usuarios WHERE nombre = 'TerapeutaNueve'), (SELECT id_sucursal FROM sucursales WHERE nombre = 'Sucursal Sur'), '2024-03-14'),
+    ((SELECT id_usuario FROM usuarios WHERE nombre = 'TerapeutaDiez'), (SELECT id_sucursal FROM sucursales WHERE nombre = 'Sucursal Sur'), '2024-04-02');
 ```
 
 Despues inserta las tres sucursales:
@@ -60,23 +77,6 @@ VALUES
     ('Exfoliación corporal', 50, 'Tratamiento exfoliante para renovar la piel.', 'Tratamientos', 800.00),
     ('Envoltura corporal', 60, 'Tratamiento corporal hidratante y relajante.', 'Tratamientos', 950.00),
     ('Masaje deportivo', 60, 'Masaje para recuperación y bienestar muscular.', 'Masajes', 900.00);
-```
-
-Crea los diez terapeutas. Las subconsultas los relacionan con el usuario y la sucursal por nombre, sin depender de que los IDs generados sean consecutivos:
-
-```sql
-INSERT INTO terapeutas (id_usuario, id_sucursal, fecha_contratacion)
-VALUES
-    ((SELECT id_usuario FROM Usuarios WHERE nombre = 'TerapeutaUno'), (SELECT id_sucursal FROM sucursales WHERE nombre = 'Sucursal Centro'), '2024-01-15'),
-    ((SELECT id_usuario FROM Usuarios WHERE nombre = 'TerapeutaDos'), (SELECT id_sucursal FROM sucursales WHERE nombre = 'Sucursal Centro'), '2024-02-01'),
-    ((SELECT id_usuario FROM Usuarios WHERE nombre = 'TerapeutaTres'), (SELECT id_sucursal FROM sucursales WHERE nombre = 'Sucursal Centro'), '2024-03-10'),
-    ((SELECT id_usuario FROM Usuarios WHERE nombre = 'TerapeutaCuatro'), (SELECT id_sucursal FROM sucursales WHERE nombre = 'Sucursal Norte'), '2024-01-20'),
-    ((SELECT id_usuario FROM Usuarios WHERE nombre = 'TerapeutaCinco'), (SELECT id_sucursal FROM sucursales WHERE nombre = 'Sucursal Norte'), '2024-02-12'),
-    ((SELECT id_usuario FROM Usuarios WHERE nombre = 'TerapeutaSeis'), (SELECT id_sucursal FROM sucursales WHERE nombre = 'Sucursal Norte'), '2024-03-05'),
-    ((SELECT id_usuario FROM Usuarios WHERE nombre = 'TerapeutaSiete'), (SELECT id_sucursal FROM sucursales WHERE nombre = 'Sucursal Sur'), '2024-01-25'),
-    ((SELECT id_usuario FROM Usuarios WHERE nombre = 'TerapeutaOcho'), (SELECT id_sucursal FROM sucursales WHERE nombre = 'Sucursal Sur'), '2024-02-18'),
-    ((SELECT id_usuario FROM Usuarios WHERE nombre = 'TerapeutaNueve'), (SELECT id_sucursal FROM sucursales WHERE nombre = 'Sucursal Sur'), '2024-03-14'),
-    ((SELECT id_usuario FROM Usuarios WHERE nombre = 'TerapeutaDiez'), (SELECT id_sucursal FROM sucursales WHERE nombre = 'Sucursal Sur'), '2024-04-02');
 ```
 
 Crea las salas y relacionalas con sus respectivas sucursales, 4 salas por sucursal en esta prueba:

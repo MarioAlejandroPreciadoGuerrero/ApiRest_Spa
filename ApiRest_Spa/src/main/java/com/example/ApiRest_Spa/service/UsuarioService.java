@@ -34,7 +34,7 @@ public class UsuarioService  {
         nuevoUsuario.setNombre(request.getUsername());
         nuevoUsuario.setFechaRegistro(Date.from(Instant.now()));
         nuevoUsuario.setEmail(request.getEmail());
-        nuevoUsuario.setPassword(passwordEncoder.encode(request.getPassword()));
+        nuevoUsuario.setContrasenia(passwordEncoder.encode(request.getPassword()));
         return usuarioRepository.save(nuevoUsuario);
     }
 

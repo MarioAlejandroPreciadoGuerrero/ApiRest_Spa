@@ -33,14 +33,14 @@ public class Usuario {
     @Pattern(regexp = "^[a-zA-Z]+$", message = "El nombre solo puede contener letras")
     private String nombre;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 255)
     @Email()
     private String email;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 60)
     @NotBlank
     @Pattern(regexp = "^[a-zA-Z0-9@#]+$")
-    private String password;
+    private String contrasenia;
 
 
 }
