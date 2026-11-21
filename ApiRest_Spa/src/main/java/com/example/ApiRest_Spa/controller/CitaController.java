@@ -20,7 +20,6 @@ public class CitaController {
         return citaService.obtenerMisCitas(id);
     }
 
-
     @PostMapping
     public Cita crearCita(@RequestBody Cita cita){
         return citaService.agendarCita( cita );

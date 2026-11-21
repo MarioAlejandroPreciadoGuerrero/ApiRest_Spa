@@ -15,6 +15,6 @@ public class UserRequest {
      private String email;
 
      @NotBlank(message = "La contraseña es obligatoria")
-     @Pattern(regexp = "^[a-zA-Z0-9@#]+$", message = "La contraseña debe contener letras mayus y minus, al menos un numero y un caracter especial")
+     @Pattern(regexp = "^[a-zA-Z0-9@#_]+$", message = "La contraseña debe contener letras mayus y minus, al menos un numero y un caracter especial")
      private String password;
 }
