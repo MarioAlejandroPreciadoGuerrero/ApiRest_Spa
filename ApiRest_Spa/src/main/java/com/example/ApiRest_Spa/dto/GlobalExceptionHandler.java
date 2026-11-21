@@ -1,7 +1,8 @@
 package com.example.ApiRest_Spa.dto;
 
 
-import APIRest.exception.ResourceNotFoundException;
+
+import com.example.ApiRest_Spa.exception.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

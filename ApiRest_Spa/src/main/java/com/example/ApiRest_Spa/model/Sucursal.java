@@ -43,7 +43,7 @@ public class Sucursal {
     private String codigo_postal;
 
     @Pattern(
-            regexp = "^\\d{10}$",
+            regexp = "^\\d{10} $",
             message = "El telefono dene contener 10 dígitos"
     )
     @Column

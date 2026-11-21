@@ -1,9 +1,8 @@
 package com.example.ApiRest_Spa.model;
 
 
-import com.example.spa_AdminPanel.model.Cliente;
-import com.example.spa_AdminPanel.model.EstadoCita;
-import com.example.spa_AdminPanel.model.Sala;
+
+import com.example.ApiRest_Spa.ENUM.EstadoCita;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -26,9 +25,9 @@ public class Cita {
     private Long id_cita;
 
     @ManyToOne
-    @JoinColumn(name = "id_cliente", nullable = false)
+    @JoinColumn(name = "idUsuario", nullable = false)
     @NotNull(message = "Debe seleccionar un cliente")
-    private Cliente cliente;
+    private Usuario usuario;
 
     @ManyToOne
     @JoinColumn(name = "id_servicio", nullable = false)

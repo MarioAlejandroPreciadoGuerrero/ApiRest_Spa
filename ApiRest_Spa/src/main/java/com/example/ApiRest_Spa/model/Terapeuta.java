@@ -1,8 +1,5 @@
 package com.example.ApiRest_Spa.model;
 
-
-import com.example.spa_AdminPanel.model.Sucursal;
-import com.example.spa_AdminPanel.model.Usuario;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.PastOrPresent;
 import lombok.AllArgsConstructor;

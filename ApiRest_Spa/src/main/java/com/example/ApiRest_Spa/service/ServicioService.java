@@ -1,9 +1,10 @@
 package com.example.ApiRest_Spa.service;
 
-import APIRest.exception.BusinessRulesException;
-import APIRest.exception.ResourceNotFoundException;
-import APIRest.model.Servicio;
-import APIRest.repository.ServicioRepository;
+
+import com.example.ApiRest_Spa.exception.BusinessRulesException;
+import com.example.ApiRest_Spa.exception.ResourceNotFoundException;
+import com.example.ApiRest_Spa.model.Servicio;
+import com.example.ApiRest_Spa.repository.ServicioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

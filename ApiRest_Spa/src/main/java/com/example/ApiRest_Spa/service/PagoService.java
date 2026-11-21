@@ -1,9 +1,9 @@
 package com.example.ApiRest_Spa.service;
 
-import APIRest.exception.ResourceNotFoundException;
-import APIRest.model.Pago;
-import APIRest.repository.PagoRepository;
-import com.example.spa_AdminPanel.model.EstadoPago;
+import com.example.ApiRest_Spa.ENUM.EstadoPago;
+import com.example.ApiRest_Spa.exception.ResourceNotFoundException;
+import com.example.ApiRest_Spa.model.Pago;
+import com.example.ApiRest_Spa.repository.PagoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

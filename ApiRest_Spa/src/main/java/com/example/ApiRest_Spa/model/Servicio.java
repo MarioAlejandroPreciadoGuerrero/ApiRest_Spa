@@ -1,6 +1,6 @@
 package com.example.ApiRest_Spa.model;
 
-import com.example.spa_AdminPanel.model.Terapeuta;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;

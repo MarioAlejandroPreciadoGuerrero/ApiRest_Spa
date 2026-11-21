@@ -1,6 +1,5 @@
 package com.example.ApiRest_Spa.Security;
-
-import APIRest.service.JwtService;
+import com.example.ApiRest_Spa.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

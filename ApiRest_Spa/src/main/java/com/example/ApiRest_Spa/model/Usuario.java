@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -40,5 +41,6 @@ public class Usuario {
     @NotBlank
     @Pattern(regexp = "^[a-zA-Z0-9@#]+$")
     private String password;
+
 
 }

@@ -1,7 +1,7 @@
 package com.example.ApiRest_Spa.model;
 
-import com.example.spa_AdminPanel.model.EstadoPago;
-import com.example.spa_AdminPanel.model.MetodoPago;
+
+import com.example.ApiRest_Spa.ENUM.EstadoPago;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;

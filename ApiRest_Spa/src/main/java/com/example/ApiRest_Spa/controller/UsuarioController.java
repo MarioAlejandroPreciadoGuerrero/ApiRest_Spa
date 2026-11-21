@@ -26,9 +26,5 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioService.obtenerUsuarioPorId(id));
     }
 
-
-
-
-
-
+    
 }

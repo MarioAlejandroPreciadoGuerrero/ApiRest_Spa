@@ -29,9 +29,9 @@ public class AuthController {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    @PostMapping
+    @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
-        Usuario usuario = usuarioRepository.findByNombre(request.getUsername());
+        Usuario usuario = usuarioRepository.findByEmail(request.getUsername());
 
         if(usuario == null){
             return ResponseEntity
@@ -45,7 +45,9 @@ public class AuthController {
                     .body(Map.of("Error","Credenciales no coinciden"));
         }
 
-        String toke = jwtService.generateToken(usuario.getNombre());
+        String toke = jwtService.generateToken(usuario.getEmail());
         return ResponseEntity.ok(new LoginResponse(toke));
     }
+
+
 }

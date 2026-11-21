@@ -1,6 +1,7 @@
 package com.example.ApiRest_Spa.repository;
 
 
+import com.example.ApiRest_Spa.ENUM.EstadoCita;
 import com.example.ApiRest_Spa.model.Cita;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,12 +16,12 @@ public interface CitaRepository extends JpaRepository<Cita, Long> {
 
     List<Cita> findCitasByEstado(EstadoCita estado);
 
-    @Query("SELECT c FROM Cita c WHERE c.cliente.id_cliente = :idCliente")
+    @Query("SELECT c FROM Cita c WHERE c.usuario.idUsuario = :idUsuario")
     List<Cita> findCitasByClienteId(@Param("idCliente") Long idCliente);
 
     @Query("""
             SELECT c FROM Cita c
-            WHERE c.cliente.id_cliente = :idCliente
+            WHERE c.usuario.idUsuario = :idUsuario
               AND c.estado = :estado
             """)
     List<Cita> findCitasByClienteIdAndEstado(
@@ -31,7 +32,7 @@ public interface CitaRepository extends JpaRepository<Cita, Long> {
     @Query("""
             SELECT c FROM Cita c
             WHERE c.id_cita = :idCita
-              AND c.cliente.id_cliente = :idCliente
+              AND c.usuario.idUsuario = :idUsuario
             """)
     Optional<Cita> findCitaByIdAndClienteId(
             @Param("idCita") Long idCita,

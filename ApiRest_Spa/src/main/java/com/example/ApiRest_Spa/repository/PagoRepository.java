@@ -1,6 +1,7 @@
 package com.example.ApiRest_Spa.repository;
 
 
+import com.example.ApiRest_Spa.ENUM.EstadoPago;
 import com.example.ApiRest_Spa.model.Pago;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,14 +15,14 @@ import java.util.Optional;
 public interface PagoRepository extends JpaRepository<Pago, Long> {
     @Query("""
             SELECT p FROM Pago p
-            WHERE p.cita.cliente.id_cliente = :idCliente
+            WHERE p.cita.usuario.idUsuario = :idUsuario
             ORDER BY p.fecha_pago DESC
             """)
     List<Pago> findPagosByIdCliente(@Param("idCliente") Long idCliente);
 
     @Query("""
             SELECT p FROM Pago p
-            WHERE p.cita.cliente.id_cliente = :idCliente
+            WHERE p.cita.usuario.idUsuario = :idUsuario
               AND p.estado_pago = :estado
             ORDER BY p.fecha_pago DESC
             """)
@@ -33,7 +34,7 @@ public interface PagoRepository extends JpaRepository<Pago, Long> {
     @Query("""
             SELECT p FROM Pago p
             WHERE p.id_pago = :idPago
-              AND p.cita.cliente.id_cliente = :idCliente
+              AND p.cita.usuario.idUsuario = :idUsuario
             """)
     Optional<Pago> findPagoByIdAndIdCliente(
             @Param("idPago") Long idPago,

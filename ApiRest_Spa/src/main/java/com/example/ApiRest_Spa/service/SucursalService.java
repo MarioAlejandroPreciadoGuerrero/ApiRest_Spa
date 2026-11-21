@@ -1,8 +1,8 @@
 package com.example.ApiRest_Spa.service;
 
-import APIRest.exception.ResourceNotFoundException;
-import APIRest.model.Sucursal;
-import APIRest.repository.SucursalRepository;
+import com.example.ApiRest_Spa.exception.ResourceNotFoundException;
+import com.example.ApiRest_Spa.model.Sucursal;
+import com.example.ApiRest_Spa.repository.SucursalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

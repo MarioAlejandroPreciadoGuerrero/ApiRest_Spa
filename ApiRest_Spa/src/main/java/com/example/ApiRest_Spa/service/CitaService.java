@@ -1,9 +1,10 @@
 package com.example.ApiRest_Spa.service;
 
-import APIRest.exception.ResourceNotFoundException;
-import APIRest.model.Cita;
-import APIRest.repository.CitaRepository;
-import com.example.spa_AdminPanel.model.EstadoCita;
+
+import com.example.ApiRest_Spa.ENUM.EstadoCita;
+import com.example.ApiRest_Spa.exception.ResourceNotFoundException;
+import com.example.ApiRest_Spa.model.Cita;
+import com.example.ApiRest_Spa.repository.CitaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
