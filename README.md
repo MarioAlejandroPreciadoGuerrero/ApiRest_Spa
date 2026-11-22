@@ -24,14 +24,14 @@ INSERT INTO usuarios(fecha_registro, nombre, email, password)
 VALUES
     (NOW(), 'TerapeutaUno', 'terapeuta1@example.com', '$2a$10$XqReKhng9fF928s9yWMqseEkbG5V6qUlY7/NZ09R23VKMs2shoL6i'),
     (NOW(), 'TerapeutaDos', 'terapeuta2@example.com', '$2a$10$XqReKhng9fF928s9yWMqseEkbG5V6qUlY7/NZ09R23VKMs2shoL6i'),
-    (NOW(), 'TerapeutaTres', 'terapeuta3@example.com', '$2a$10$mlQplF4vF5qsLzchWmlLG.kVgXFjVqrecidK.IZmD3PCvYfUkK2tG'),
-    (NOW(), 'TerapeutaCuatro', 'terapeuta4@example.com', '$2a$10$mlQplF4vF5qsLzchWmlLG.kVgXFjVqrecidK.IZmD3PCvYfUkK2tG'),
-    (NOW(), 'TerapeutaCinco', 'terapeuta5@example.com', '$2a$10$R/ZkcB2fLh6JOEZ7DPWp9OoezBxYc1WxoA8muxE4nxLCnKvG0y.Ay'),
-    (NOW(), 'TerapeutaSeis', 'terapeuta6@example.com', '$2a$10$R/ZkcB2fLh6JOEZ7DPWp9OoezBxYc1WxoA8muxE4nxLCnKvG0y.Ay'),
-    (NOW(), 'TerapeutaSiete', 'terapeuta7@example.com', '$2a$10$Yfs5zLrzdMQhfq1lh1jmFOOoIUXaMMbNQ6McM8FMAiDRHf4sCKEq.'),
-    (NOW(), 'TerapeutaOcho', 'terapeuta8@example.com', '$2a$10$Yfs5zLrzdMQhfq1lh1jmFOOoIUXaMMbNQ6McM8FMAiDRHf4sCKEq.'),
-    (NOW(), 'TerapeutaNueve', 'terapeuta9@example.com', '$2a$10$4NQij0Yh3HNnwKtCajFrpOeyj4jOF.hsTEZKz0fw/v9Bd6DM7mHV6'),
-    (NOW(), 'TerapeutaDiez', 'terapeuta10@example.com', '$2a$10$4NQij0Yh3HNnwKtCajFrpOeyj4jOF.hsTEZKz0fw/v9Bd6DM7mHV6');
+    (NOW(), 'TerapeutaTres', 'terapeuta3@example.com', '$2a$10$XqReKhng9fF928s9yWMqseEkbG5V6qUlY7/NZ09R23VKMs2shoL6i'),
+    (NOW(), 'TerapeutaCuatro', 'terapeuta4@example.com', '$2a$10$XqReKhng9fF928s9yWMqseEkbG5V6qUlY7/NZ09R23VKMs2shoL6i'),
+    (NOW(), 'TerapeutaCinco', 'terapeuta5@example.com', '$2a$10$XqReKhng9fF928s9yWMqseEkbG5V6qUlY7/NZ09R23VKMs2shoL6i'),
+    (NOW(), 'TerapeutaSeis', 'terapeuta6@example.com', '$2a$10$XqReKhng9fF928s9yWMqseEkbG5V6qUlY7/NZ09R23VKMs2shoL6i'),
+    (NOW(), 'TerapeutaSiete', 'terapeuta7@example.com', '$2a$10$XqReKhng9fF928s9yWMqseEkbG5V6qUlY7/NZ09R23VKMs2shoL6i'),
+    (NOW(), 'TerapeutaOcho', 'terapeuta8@example.com', '$2a$10$XqReKhng9fF928s9yWMqseEkbG5V6qUlY7/NZ09R23VKMs2shoL6i'),
+    (NOW(), 'TerapeutaNueve', 'terapeuta9@example.com', '$2a$10$XqReKhng9fF928s9yWMqseEkbG5V6qUlY7/NZ09R23VKMs2shoL6i'),
+    (NOW(), 'TerapeutaDiez', 'terapeuta10@example.com', '$2a$10$XqReKhng9fF928s9yWMqseEkbG5V6qUlY7/NZ09R23VKMs2shoL6i');
 ```
 
 Crea los diez terapeutas. Las subconsultas los relacionan con el usuario y la sucursal por nombre, sin depender de que los IDs generados sean consecutivos:
