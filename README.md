@@ -165,3 +165,18 @@ VALUES
     ('PAGADO', '2025-05-10 10:50:00', 650.00, (SELECT id_cita FROM citas WHERE id_usuario = (SELECT id_usuario FROM Usuarios WHERE nombre = 'UsuarioCinco') AND fecha_hora_inicio = '2025-05-10 10:00:00'), (SELECT id_metodo_pago FROM metodos_pago WHERE nombre = 'Transferencia')),
     ('PAGADO', '2025-05-20 13:05:00', 950.00, (SELECT id_cita FROM citas WHERE id_usuario = (SELECT id_usuario FROM Usuarios WHERE nombre = 'UsuarioCinco') AND fecha_hora_inicio = '2025-05-20 12:00:00'), (SELECT id_metodo_pago FROM metodos_pago WHERE nombre = 'Efectivo'));
 ```
+
+# API REST
+
+Realiza pruebas desde postman hacia la api
+
+1. Corre ApiRestSpaApplication
+2. En Postman, selecciona **Import** y elige ese archivo.
+3. Revisa la variable `baseUrl` (por defecto `http://localhost:8080`).
+4. Ejecuta primero **Auth > Login**. El script de pruebas guarda el token automáticamente en la variable `token`.
+5. Ejecuta el resto de peticiones; las protegidas ya envían `Authorization: Bearer {{token}}`.
+
+## Notas
+- Los IDs de ejemplo (`idServicio=1`, `idTerapeuta=6`, `idSala=1`, `idMetodoPago=1`) corresponden a los datos de prueba de este README. Verifica los IDs reales con los endpoints de catálogo.
+- Las respuestas de usuarios y citas incluyen el hash de la contraseña en `contrasenia`. Debemos ocultar eso
+- `POST /api/citas` valida que el servicio, el terapeuta y la sala existan, pero no valida que el terapeuta ofrezca ese servicio ni que pertenezca a la misma sucursal que la sala.

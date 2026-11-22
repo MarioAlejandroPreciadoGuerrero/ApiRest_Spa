@@ -1,0 +1,582 @@
+{
+  "info": {
+    "name": "ApiRest Spa",
+    "description": "Colección de pruebas para la API REST del spa.\n\n1. Ejecuta **Auth > Login** para guardar el token automáticamente en la variable `token`.\n2. Ajusta las variables de la colección si los IDs de tu base de datos son distintos.\n3. Las peticiones protegidas usan `Authorization: Bearer {{token}}`.\n4. Para pagar una cita necesitas métodos de pago en la tabla `metodos_pago`.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "idUsuario",
+      "value": "1"
+    },
+    {
+      "key": "idSucursal",
+      "value": "1"
+    },
+    {
+      "key": "idSala",
+      "value": "1"
+    },
+    {
+      "key": "idServicio",
+      "value": "1"
+    },
+    {
+      "key": "idTerapeuta",
+      "value": "6"
+    },
+    {
+      "key": "idCita",
+      "value": "1"
+    },
+    {
+      "key": "idMetodoPago",
+      "value": "1"
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Login correcto\", () => pm.response.to.have.status(200));",
+                  "const data = pm.response.json();",
+                  "if (data.token) {",
+                  "  pm.collectionVariables.set(\"token\", data.token);",
+                  "  console.log(\"Token guardado en la variable token\");",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"UsuarioUno\",\n  \"password\": \"SpaUser@2026\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Usuarios",
+      "item": [
+        {
+          "name": "Registrar usuario",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Usuario creado\", () => pm.response.to.have.status(200));",
+                  "const data = pm.response.json();",
+                  "if (data.idUsuario) {",
+                  "  pm.collectionVariables.set(\"idUsuario\", data.idUsuario);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"NuevoCliente\",\n  \"email\": \"nuevocliente@example.com\",\n  \"password\": \"SpaUser@2026\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/usuario",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "usuario"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Obtener usuario por ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/usuario/{{idUsuario}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "usuario",
+                "{{idUsuario}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Catálogo público",
+      "item": [
+        {
+          "name": "Listar servicios",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/servicios",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "servicios"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Listar sucursales",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/sucursales",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "sucursales"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Listar terapeutas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/terapeutas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "terapeutas"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Salas",
+      "item": [
+        {
+          "name": "Listar salas",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/salas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "salas"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Obtener sala por ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/salas/{{idSala}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "salas",
+                "{{idSala}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Salas por sucursal",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/salas/sucursal/{{idSucursal}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "salas",
+                "sucursal",
+                "{{idSucursal}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Salas activas por sucursal",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/salas/sucursal/{{idSucursal}}/activas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "salas",
+                "sucursal",
+                "{{idSucursal}}",
+                "activas"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Citas",
+      "item": [
+        {
+          "name": "Mis citas",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/citas/mine",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "citas",
+                "mine"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Crear cita",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Cita creada\", () => pm.response.to.have.status(200));",
+                  "const data = pm.response.json();",
+                  "if (data.id_cita) {",
+                  "  pm.collectionVariables.set(\"idCita\", data.id_cita);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idServicio\": {{idServicio}},\n  \"idTerapeuta\": {{idTerapeuta}},\n  \"idSala\": {{idSala}},\n  \"fechaHoraInicio\": \"2027-01-15T10:00:00\",\n  \"fechaHoraFin\": \"2027-01-15T11:00:00\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/citas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "citas"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Cancelar cita",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Cita cancelada\", () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_cita\": {{idCita}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/citas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "citas"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Pagos",
+      "item": [
+        {
+          "name": "Mis pagos",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/pago/mine",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "pago",
+                "mine"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Pagar cita",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Pago registrado\", () => pm.response.to.have.status(201));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idMetodoPago\": {{idMetodoPago}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/pago/cita/{{idCita}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "pago",
+                "cita",
+                "{{idCita}}"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

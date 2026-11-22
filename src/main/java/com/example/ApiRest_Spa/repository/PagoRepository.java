@@ -18,14 +18,14 @@ public interface PagoRepository extends JpaRepository<Pago, Long> {
 
     @Query("""
             SELECT p FROM Pago p
-            WHERE p.cita.usuario.idUsuario = :idUsuario
+            WHERE p.cita.usuario.idUsuario = :idCliente
             ORDER BY p.fecha_pago DESC
             """)
     List<Pago> findPagosByIdCliente(@Param("idCliente") Long idCliente);
 
     @Query("""
             SELECT p FROM Pago p
-            WHERE p.cita.usuario.idUsuario = :idUsuario
+            WHERE p.cita.usuario.idUsuario = :idCliente
               AND p.estado_pago = :estado
             ORDER BY p.fecha_pago DESC
             """)
@@ -37,7 +37,7 @@ public interface PagoRepository extends JpaRepository<Pago, Long> {
     @Query("""
             SELECT p FROM Pago p
             WHERE p.id_pago = :idPago
-              AND p.cita.usuario.idUsuario = :idUsuario
+              AND p.cita.usuario.idUsuario = :idCliente
             """)
     Optional<Pago> findPagoByIdAndIdCliente(
             @Param("idPago") Long idPago,

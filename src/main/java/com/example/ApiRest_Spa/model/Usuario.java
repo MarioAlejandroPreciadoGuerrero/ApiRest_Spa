@@ -39,7 +39,7 @@ public class Usuario {
 
     @Column(nullable = false, length = 60)
     @NotBlank
-    @Pattern(regexp = "^[a-zA-Z0-9@#]+$")
+    //quite la regex porque no me dejaba poner una contraseña en plano, la ocupa en bcrypt
     private String contrasenia;
 
 

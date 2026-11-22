@@ -49,14 +49,13 @@ public class CitaController {
     @PatchMapping("")
     public ResponseEntity<Cita> eliminarCita(HttpServletRequest request,  @RequestBody Cita cita){
         //obtener el usuario de la request
-        String email = (String) request.getAttribute("email");
-        Usuario user = usuarioService.obtenerUsuarioPorEmail(email);
-
-        //si es su cita, cancelarla
-        if(citaService.esMiCita(cita.getId_cita(), user.getIdUsuario())){
-            return ResponseEntity.ok(citaService.cancelarCita(cita.getId_cita()));
+        String username = (String) request.getAttribute("username");
+        Usuario user = usuarioService.obtenerUsuarioPorNombre(username);
+        if (user == null){
+            throw new ResourceNotFoundException("Usuario no encontrado");
         }
 
-        return null;
+        //si es su cita, cancelarla (valida propiedad y estado)
+        return ResponseEntity.ok(citaService.cancelarMiCita(cita.getId_cita(), user.getIdUsuario()));
     }
 }

@@ -16,12 +16,12 @@ public interface CitaRepository extends JpaRepository<Cita, Long> {
 
     List<Cita> findCitasByEstado(EstadoCita estado);
 
-    @Query("SELECT c FROM Cita c WHERE c.usuario.idUsuario = :idUsuario")
+    @Query("SELECT c FROM Cita c WHERE c.usuario.idUsuario = :idCliente")
     List<Cita> findCitasByClienteId(@Param("idCliente") Long idCliente);
 
     @Query("""
             SELECT c FROM Cita c
-            WHERE c.usuario.idUsuario = :idUsuario
+            WHERE c.usuario.idUsuario = :idCliente
               AND c.estado = :estado
             """)
     List<Cita> findCitasByClienteIdAndEstado(
@@ -32,7 +32,7 @@ public interface CitaRepository extends JpaRepository<Cita, Long> {
     @Query("""
             SELECT c FROM Cita c
             WHERE c.id_cita = :idCita
-              AND c.usuario.idUsuario = :idUsuario
+              AND c.usuario.idUsuario = :idCliente
             """)
     Optional<Cita> findCitaByIdAndClienteId(
             @Param("idCita") Long idCita,
