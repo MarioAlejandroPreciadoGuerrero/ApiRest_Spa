@@ -3,6 +3,7 @@ package com.example.ApiRest_Spa.dto;
 
 
 import com.example.ApiRest_Spa.exception.ResourceNotFoundException;
+import com.example.ApiRest_Spa.exception.BusinessRulesException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -21,5 +22,15 @@ public class GlobalExceptionHandler {
                 LocalDateTime.now()
         );
         return new ResponseEntity<>(errorDTO, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(BusinessRulesException.class)
+    public ResponseEntity<ErrorDTO> manejarReglaDeNegocio(BusinessRulesException ex){
+        ErrorDTO errorDTO = new ErrorDTO(
+                "Solicitud inválida",
+                List.of(ex.getMessage()),
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(errorDTO, HttpStatus.BAD_REQUEST);
     }
 }

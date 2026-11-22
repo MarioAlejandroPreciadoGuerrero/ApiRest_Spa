@@ -13,6 +13,9 @@ import java.util.Optional;
 
 @Repository
 public interface PagoRepository extends JpaRepository<Pago, Long> {
+    @Query("SELECT CASE WHEN COUNT(p) > 0 THEN true ELSE false END FROM Pago p WHERE p.cita.id_cita = :idCita")
+    boolean existsByCitaId(@Param("idCita") Long idCita);
+
     @Query("""
             SELECT p FROM Pago p
             WHERE p.cita.usuario.idUsuario = :idUsuario
