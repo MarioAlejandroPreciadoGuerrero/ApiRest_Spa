@@ -1,5 +1,6 @@
 package com.example.ApiRest_Spa.service;
 
+import com.example.ApiRest_Spa.dto.TerapeutaResponse;
 import com.example.ApiRest_Spa.exception.ResourceNotFoundException;
 import com.example.ApiRest_Spa.model.Terapeuta;
 import com.example.ApiRest_Spa.repository.TerapeutaRepository;
@@ -43,4 +44,14 @@ public class TerapeutaService {
     public List<Terapeuta> obtenerPorServicioYSucursal(Long idServicio, Long idSucursal){
         return this.terapeutaRepository.findByServicioIdAndSucursalId(idServicio, idSucursal);
     }
+
+    public TerapeutaResponse toResponse(Terapeuta t) {
+    return TerapeutaResponse.builder()
+            .idTerapeuta(t.getId_terapeuta())
+            .nombre(t.getUsuario() != null ? t.getUsuario().getNombre() : null)
+            .idSucursal(t.getSucursal() != null ? t.getSucursal().getId_sucursal() : null)
+            .nombreSucursal(t.getSucursal() != null ? t.getSucursal().getNombre() : null)
+            .fechaContratacion(t.getFecha_contratacion())
+            .build();
+}
 }

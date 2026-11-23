@@ -2,18 +2,16 @@ package com.example.ApiRest_Spa.service;
 
 
 import com.example.ApiRest_Spa.dto.UserRequest;
-import com.example.ApiRest_Spa.exception.ResourceNotFoundException;
+import com.example.ApiRest_Spa.dto.UsuarioResponse;
+import com.example.ApiRest_Spa.exception.BusinessRulesException;
 import com.example.ApiRest_Spa.model.Usuario;
 import com.example.ApiRest_Spa.repository.UsuarioRepository;
-import org.hibernate.tool.schema.spi.ExceptionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.Date;
-import java.util.Optional;
 
 @Service
 public class UsuarioService  {
@@ -27,7 +25,7 @@ public class UsuarioService  {
 
     public Usuario registrarUsuario(UserRequest request){
         if (usuarioRepository.existsByNombre(request.getUsername())){
-            throw new ResourceNotFoundException("El nombre de usuario ya existe");
+            throw new BusinessRulesException("El nombre de usuario ya existe");
         }
 
         Usuario nuevoUsuario = new Usuario();
@@ -37,6 +35,15 @@ public class UsuarioService  {
         nuevoUsuario.setContrasenia(passwordEncoder.encode(request.getPassword()));
         return usuarioRepository.save(nuevoUsuario);
     }
+
+    public UsuarioResponse toResponse(Usuario usuario) {
+    return UsuarioResponse.builder()
+            .idUsuario(usuario.getIdUsuario())
+            .nombre(usuario.getNombre())
+            .email(usuario.getEmail())
+            .fechaRegistro(usuario.getFechaRegistro())
+            .build();
+}
 
     public Usuario obtenerUsuarioPorId(Long id){
         return usuarioRepository.findById(id).orElse(null);

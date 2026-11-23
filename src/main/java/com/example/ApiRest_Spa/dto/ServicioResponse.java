@@ -12,8 +12,9 @@ import lombok.NoArgsConstructor;
 public class ServicioResponse {
     private Long idServicio;
     private String nombre;
-    private Integer minutosDuracion;
+    private Integer duracion;
     private String descripcion;
     private String categoria;
     private Double precio;
+    private String urlImagen;
 }

@@ -1,6 +1,7 @@
 package com.example.ApiRest_Spa.service;
 
 import com.example.ApiRest_Spa.ENUM.EstadoPago;
+import com.example.ApiRest_Spa.dto.PagoResponse;
 import com.example.ApiRest_Spa.ENUM.EstadoCita;
 import com.example.ApiRest_Spa.exception.BusinessRulesException;
 import com.example.ApiRest_Spa.exception.ResourceNotFoundException;
@@ -71,5 +72,16 @@ public class PagoService {
 
         return pagoRepository.save(pago);
     }
+
+    public PagoResponse toResponse(Pago p) {
+    return PagoResponse.builder()
+            .idPago(p.getId_pago())
+            .idCita(p.getCita() != null ? p.getCita().getId_cita() : null)
+            .nombreMetodoPago(p.getMetodoPago() != null ? p.getMetodoPago().getNombre() : null)
+            .monto(p.getMonto())
+            .fechaPago(p.getFecha_pago())
+            .estadoPago(p.getEstado_pago())
+            .build();
+}
 
 }

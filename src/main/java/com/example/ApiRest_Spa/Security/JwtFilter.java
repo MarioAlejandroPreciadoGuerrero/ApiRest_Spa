@@ -1,22 +1,30 @@
 package com.example.ApiRest_Spa.Security;
+import com.example.ApiRest_Spa.dto.ErrorDTO;
 import com.example.ApiRest_Spa.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import tools.jackson.databind.ObjectMapper;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.List;
 
 @Component
 public class JwtFilter extends OncePerRequestFilter {
     @Autowired
     private JwtService jwtService;
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     private Boolean isPublicRoute (HttpServletRequest request) {
         String method = request.getMethod();
@@ -75,11 +83,17 @@ public class JwtFilter extends OncePerRequestFilter {
     }
 
     private void sendUnauthorized(HttpServletResponse response, String message) throws IOException {
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
-        String json = String.format("{\"error\": \"%s\"}", message);
-        response.getWriter().write(json);
+        ErrorDTO errorDTO = new ErrorDTO(
+                "No autorizado",
+                List.of(message),
+                LocalDateTime.now()
+        );
+
+        response.getWriter().write(objectMapper.writeValueAsString(errorDTO));
     }
+
 }

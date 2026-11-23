@@ -1,6 +1,7 @@
 package com.example.ApiRest_Spa.service;
 
 
+import com.example.ApiRest_Spa.dto.ServicioResponse;
 import com.example.ApiRest_Spa.exception.BusinessRulesException;
 import com.example.ApiRest_Spa.exception.ResourceNotFoundException;
 import com.example.ApiRest_Spa.model.Servicio;
@@ -75,5 +76,17 @@ public class ServicioService {
             return servicioRepository.save(servicio);
         }).orElseThrow(() -> new BusinessRulesException("Error en el formato del nuevo servicio"));
     }
+
+    public ServicioResponse toResponse(Servicio s) {
+    return ServicioResponse.builder()
+            .idServicio(s.getId())
+            .nombre(s.getNombre())
+            .duracion(s.getDuracion())
+            .descripcion(s.getDescripcion())
+            .categoria(s.getCategoria())
+            .precio(s.getPrecio())
+            .urlImagen(s.getUrl_imagen())
+            .build();
+}
 
 }

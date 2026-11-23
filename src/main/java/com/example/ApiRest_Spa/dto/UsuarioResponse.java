@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @Builder
@@ -15,5 +15,5 @@ public class UsuarioResponse {
     private Long idUsuario;
     private String nombre;
     private String email;
-    private LocalDateTime fechaRegistro;
+    private Date fechaRegistro;
 }

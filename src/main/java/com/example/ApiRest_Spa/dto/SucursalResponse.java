@@ -5,8 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalTime;
-
 @Data
 @Builder
 @NoArgsConstructor
@@ -17,6 +15,7 @@ public class SucursalResponse {
     private String direccion;
     private String colonia;
     private String codigoPostal;
-    private LocalTime horaApertura;
-    private LocalTime horaCierre;
+    private String telefono;
+    private String horaApertura;
+    private String horaCierre;
 }

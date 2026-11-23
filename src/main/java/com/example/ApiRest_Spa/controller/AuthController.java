@@ -1,13 +1,13 @@
 package com.example.ApiRest_Spa.controller;
 
-
 import com.example.ApiRest_Spa.dto.LoginRequest;
 import com.example.ApiRest_Spa.dto.LoginResponse;
+import com.example.ApiRest_Spa.exception.UnauthorizedException;
 import com.example.ApiRest_Spa.model.Usuario;
 import com.example.ApiRest_Spa.repository.UsuarioRepository;
 import com.example.ApiRest_Spa.service.JwtService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,38 +15,32 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Map;
-
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-    @Autowired
-    UsuarioRepository usuarioRepository;
 
     @Autowired
-    JwtService jwtService;
+    private UsuarioRepository usuarioRepository;
 
     @Autowired
-    PasswordEncoder passwordEncoder;
+    private JwtService jwtService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
         Usuario usuario = usuarioRepository.findByNombre(request.getUsername());
 
-        if(usuario == null){
-            return ResponseEntity
-                    .status(HttpStatus.UNAUTHORIZED)
-                    .body("Usuario no encontrado");
+        if (usuario == null) {
+            throw new UnauthorizedException("Usuario no encontrado");
         }
 
         if (!passwordEncoder.matches(request.getPassword(), usuario.getContrasenia())) {
-            return ResponseEntity
-                    .status(HttpStatus.UNAUTHORIZED)
-                    .body(Map.of("Error","Credenciales no coinciden"));
+            throw new UnauthorizedException("Credenciales no coinciden");
         }
 
         String token = jwtService.generateToken(usuario.getNombre());
         return ResponseEntity.ok(new LoginResponse(token));
     }
-
 }

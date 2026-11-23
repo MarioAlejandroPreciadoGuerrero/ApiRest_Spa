@@ -1,5 +1,6 @@
 package com.example.ApiRest_Spa.service;
 
+import com.example.ApiRest_Spa.dto.SucursalResponse;
 import com.example.ApiRest_Spa.exception.ResourceNotFoundException;
 import com.example.ApiRest_Spa.model.Sucursal;
 import com.example.ApiRest_Spa.repository.SucursalRepository;
@@ -28,4 +29,17 @@ public class SucursalService {
     public List<Sucursal> obtenerPorCodigoPostal(String codigoPostal){
         return this.sucursalRepository.findByCodigoPostal(codigoPostal);
     }
+
+    public SucursalResponse toResponse(Sucursal s) {
+    return SucursalResponse.builder()
+            .idSucursal(s.getId_sucursal())
+            .nombre(s.getNombre())
+            .direccion(s.getDireccion())
+            .colonia(s.getColonia())
+            .codigoPostal(s.getCodigo_postal())
+            .telefono(s.getTelefono())
+            .horaApertura(s.getHora_apertura())
+            .horaCierre(s.getHora_cierre())
+            .build();
+}
 }

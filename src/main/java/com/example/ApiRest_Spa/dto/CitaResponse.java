@@ -21,7 +21,7 @@ public class CitaResponse {
     private Long idServicio;
     private String nombreServicio;
     private String categoriaServicio;
-    private Integer minutosDuracion;
+    private Integer duracion;
     private Long idTerapeuta;
     private String nombreTerapeuta;
     private Long idSala;

@@ -9,6 +9,7 @@ import com.example.ApiRest_Spa.model.Sala;
 import com.example.ApiRest_Spa.model.Servicio;
 import com.example.ApiRest_Spa.model.Terapeuta;
 import com.example.ApiRest_Spa.model.Usuario;
+import com.example.ApiRest_Spa.dto.CitaResponse;
 import com.example.ApiRest_Spa.dto.CrearCitaRequest;
 import com.example.ApiRest_Spa.repository.CitaRepository;
 import com.example.ApiRest_Spa.repository.SalaRepository;
@@ -115,5 +116,24 @@ public class CitaService {
         return Objects.equals(cita.getUsuario().getIdUsuario(), idCliente);
 
     }
+
+    public CitaResponse toResponse(Cita c) {
+    return CitaResponse.builder()
+            .idCita(c.getId_cita())
+            .fechaHoraInicio(c.getFecha_hora_inicio())
+            .fechaHoraFin(c.getFecha_hora_fin())
+            .estado(c.getEstado())
+            .precioTotal(c.getPrecio_total())
+            .idServicio(c.getServicio() != null ? c.getServicio().getId() : null)
+            .nombreServicio(c.getServicio() != null ? c.getServicio().getNombre() : null)
+            .categoriaServicio(c.getServicio() != null ? c.getServicio().getCategoria() : null)
+            .duracion(c.getServicio() != null ? c.getServicio().getDuracion() : null)
+            .idTerapeuta(c.getTerapeuta() != null ? c.getTerapeuta().getId_terapeuta() : null)
+            .nombreTerapeuta(c.getTerapeuta() != null && c.getTerapeuta().getUsuario() != null
+                    ? c.getTerapeuta().getUsuario().getNombre() : null)
+            .idSala(c.getSala() != null ? c.getSala().getId_sala() : null)
+            .numeroSala(c.getSala() != null ? c.getSala().getNumero_sala() : null)
+            .build();
+}
 
 }
