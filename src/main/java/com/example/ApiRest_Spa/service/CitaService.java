@@ -26,11 +26,16 @@ import java.time.LocalDateTime;
 @Service
 public class CitaService {
 
-    private final CitaRepository citaRepository;
-    private final ServicioRepository servicioRepository;
-    private final TerapeutaRepository terapeutaRepository;
-    private final SalaRepository salaRepository;
-    private final UsuarioRepository usuarioRepository;
+    @Autowired
+    private CitaRepository citaRepository;
+    @Autowired
+    private ServicioRepository servicioRepository;
+    @Autowired
+    private TerapeutaRepository terapeutaRepository;
+    @Autowired
+    private SalaRepository salaRepository;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     @Autowired
     private TerapeutaService terapeutaService;
@@ -98,6 +103,7 @@ public class CitaService {
             throw new BusinessRulesException(
                     "El terapeuta debe pertenecer a la sucursal correspondiente a la sala seleccionada");
         }
+        //validar que el terapeuta este disponible
         if(terapeutaService.tieneCitaEnHora(request.getFechaHoraInicio(), request.getIdTerapeuta())){
             throw new BusinessRulesException("El terapeuta tiene otra cita en esa hora");
         }

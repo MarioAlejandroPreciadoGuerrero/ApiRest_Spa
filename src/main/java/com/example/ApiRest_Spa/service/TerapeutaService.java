@@ -63,13 +63,11 @@ public class TerapeutaService {
 
     public boolean tieneCitaEnHora(LocalDateTime horaInicio, Long idTerapeuta){
         List<Cita> citas = citaRepository.findCitasByTerapeutaId(idTerapeuta);
-        boolean tieneCita = false;
         for(Cita c : citas){
             if(c.getFecha_hora_inicio() == horaInicio){
-                tieneCita = true;
-                break;
+                return true;
             }
         }
-        return tieneCita;
+        return false;
     }
 }

@@ -20,7 +20,7 @@ public interface CitaRepository extends JpaRepository<Cita, Long> {
     List<Cita> findCitasByClienteId(@Param("idCliente") Long idCliente);
 
     //para obtener las citas de u nterapeuta
-    @Query("SELECT c FROM Cita c WHERE c.terapeuta.idUsuario = :idTerapeuta")
+    @Query("SELECT c FROM Cita c WHERE c.terapeuta.id_terapeuta = :idTerapeuta")
     List<Cita> findCitasByTerapeutaId(@Param("idTerapeuta") Long idTerapeuta);
 
     @Query("""
