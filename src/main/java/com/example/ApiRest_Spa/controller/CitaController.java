@@ -3,6 +3,7 @@ package com.example.ApiRest_Spa.controller;
 import com.example.ApiRest_Spa.dto.CitaResponse;
 import com.example.ApiRest_Spa.dto.CrearCitaRequest;
 import com.example.ApiRest_Spa.exception.ResourceNotFoundException;
+import com.example.ApiRest_Spa.exception.UnauthorizedException;
 import com.example.ApiRest_Spa.model.Cita;
 import com.example.ApiRest_Spa.model.Usuario;
 import com.example.ApiRest_Spa.service.CitaService;
@@ -47,8 +48,11 @@ public class CitaController {
     public ResponseEntity<CitaResponse> cancelarCita(HttpServletRequest request,
                                                      @PathVariable Long id) {
         Usuario usuario = usuarioAutenticado(request);
-        Cita citaCancelada = citaService.cancelarMiCita(id, usuario.getIdUsuario());
-        return ResponseEntity.ok(citaService.toResponse(citaCancelada));
+        if (citaService.esMiCita(id, usuario.getIdUsuario())) {
+            Cita citaCancelada = citaService.cancelarMiCita(id, usuario.getIdUsuario());
+            return ResponseEntity.ok(citaService.toResponse(citaCancelada));
+        }
+        throw new UnauthorizedException("No tienes permiso para cancelar esta cita");
     }
 
     private Usuario usuarioAutenticado(HttpServletRequest request) {

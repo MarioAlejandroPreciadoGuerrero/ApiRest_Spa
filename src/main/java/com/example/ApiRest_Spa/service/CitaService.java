@@ -109,12 +109,9 @@ public class CitaService {
     }
 
     public boolean esMiCita(Long idCita, Long idCliente){
-        Cita cita = citaRepository.findById(idCita).get();
-        if(cita == null){
-            throw new ResourceNotFoundException("Cita no encontrada");
-        }
+        Cita cita = citaRepository.findById(idCita)
+                .orElseThrow(() -> new ResourceNotFoundException("Cita no encontrada"));
         return Objects.equals(cita.getUsuario().getIdUsuario(), idCliente);
-
     }
 
     public CitaResponse toResponse(Cita c) {
