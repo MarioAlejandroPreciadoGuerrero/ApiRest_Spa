@@ -1,6 +1,8 @@
 package com.example.ApiRest_Spa.controller;
 
 import com.example.ApiRest_Spa.dto.UserRequest;
+import com.example.ApiRest_Spa.dto.UsuarioResponse;
+import com.example.ApiRest_Spa.exception.ResourceNotFoundException;
 import com.example.ApiRest_Spa.model.Usuario;
 import com.example.ApiRest_Spa.service.UsuarioService;
 import jakarta.validation.Valid;
@@ -17,15 +19,17 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @PostMapping("")
-    public ResponseEntity<Usuario> registrarUsuario (@Valid @RequestBody UserRequest request){
+    public ResponseEntity<UsuarioResponse> registrarUsuario(@Valid @RequestBody UserRequest request) {
         Usuario nuevoUsuario = usuarioService.registrarUsuario(request);
-        return new ResponseEntity<>(nuevoUsuario, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.toResponse(nuevoUsuario));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Usuario> obtenerUsuario(@PathVariable Long id){
-        return ResponseEntity.ok(usuarioService.obtenerUsuarioPorId(id));
+    public ResponseEntity<UsuarioResponse> obtenerUsuario(@PathVariable Long id) {
+        Usuario usuario = usuarioService.obtenerUsuarioPorId(id);
+        if (usuario == null) {
+            throw new ResourceNotFoundException("Usuario no encontrado");
+        }
+        return ResponseEntity.ok(usuarioService.toResponse(usuario));
     }
-
-    
 }

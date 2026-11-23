@@ -1,10 +1,9 @@
 package com.example.ApiRest_Spa.controller;
 
-
-import com.example.ApiRest_Spa.model.Sucursal;
+import com.example.ApiRest_Spa.dto.SucursalResponse;
 import com.example.ApiRest_Spa.service.SucursalService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,8 +18,10 @@ public class SucursalController {
     private SucursalService sucursalService;
 
     @GetMapping
-    public List<Sucursal> obtenerSucursales(){
-        return sucursalService.obtenerTodas();
+    public ResponseEntity<List<SucursalResponse>> obtenerSucursales() {
+        List<SucursalResponse> sucursales = sucursalService.obtenerTodas().stream()
+                .map(sucursalService::toResponse)
+                .toList();
+        return ResponseEntity.ok(sucursales);
     }
-
 }

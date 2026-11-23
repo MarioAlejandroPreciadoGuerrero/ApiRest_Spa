@@ -1,15 +1,16 @@
 package com.example.ApiRest_Spa.controller;
 
-
+import com.example.ApiRest_Spa.dto.CitaResponse;
 import com.example.ApiRest_Spa.dto.CrearCitaRequest;
 import com.example.ApiRest_Spa.exception.ResourceNotFoundException;
-import jakarta.validation.Valid;
 import com.example.ApiRest_Spa.model.Cita;
 import com.example.ApiRest_Spa.model.Usuario;
 import com.example.ApiRest_Spa.service.CitaService;
 import com.example.ApiRest_Spa.service.UsuarioService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,37 +26,37 @@ public class CitaController {
     @Autowired
     private UsuarioService usuarioService;
 
-    //cambie esto para que no se puedan obtener las citas de todos los clientes, solo la tuya
     @GetMapping("/mine")
-    public ResponseEntity<List<Cita>> obtenerCitasUsuario(HttpServletRequest request){
-        String nombre = (String) request.getAttribute("username");
-        Usuario user = usuarioService.obtenerUsuarioPorNombre(nombre);
-
-        return ResponseEntity.ok(citaService.obtenerMisCitas(user.getIdUsuario()));
+    public ResponseEntity<List<CitaResponse>> obtenerCitasUsuario(HttpServletRequest request) {
+        Usuario usuario = usuarioAutenticado(request);
+        List<CitaResponse> citas = citaService.obtenerMisCitas(usuario.getIdUsuario()).stream()
+                .map(citaService::toResponse)
+                .toList();
+        return ResponseEntity.ok(citas);
     }
 
     @PostMapping
-    public Cita crearCita(HttpServletRequest request, @Valid @RequestBody CrearCitaRequest citaRequest){
-        String nombre = (String) request.getAttribute("username");
-        Usuario usuario = usuarioService.obtenerUsuarioPorNombre(nombre);
-        if (usuario == null){
-            throw new ResourceNotFoundException("Usuario no encontrado");
-        }
-        return citaService.agendarCita(citaRequest, usuario.getIdUsuario());
+    public ResponseEntity<CitaResponse> crearCita(HttpServletRequest request,
+                                                  @Valid @RequestBody CrearCitaRequest citaRequest) {
+        Usuario usuario = usuarioAutenticado(request);
+        Cita citaCreada = citaService.agendarCita(citaRequest, usuario.getIdUsuario());
+        return ResponseEntity.status(HttpStatus.CREATED).body(citaService.toResponse(citaCreada));
     }
 
-    //necesitamos validar que el que cancela la cita es el mismo cliente que está en la cita
-    //si no, un cliente podria cancelar todas las citas que quiera, incluso las de otros clientes
-    @PatchMapping("")
-    public ResponseEntity<Cita> eliminarCita(HttpServletRequest request,  @RequestBody Cita cita){
-        //obtener el usuario de la request
+    @PatchMapping("/{id}")
+    public ResponseEntity<CitaResponse> cancelarCita(HttpServletRequest request,
+                                                     @PathVariable Long id) {
+        Usuario usuario = usuarioAutenticado(request);
+        Cita citaCancelada = citaService.cancelarMiCita(id, usuario.getIdUsuario());
+        return ResponseEntity.ok(citaService.toResponse(citaCancelada));
+    }
+
+    private Usuario usuarioAutenticado(HttpServletRequest request) {
         String username = (String) request.getAttribute("username");
-        Usuario user = usuarioService.obtenerUsuarioPorNombre(username);
-        if (user == null){
+        Usuario usuario = usuarioService.obtenerUsuarioPorNombre(username);
+        if (usuario == null) {
             throw new ResourceNotFoundException("Usuario no encontrado");
         }
-
-        //si es su cita, cancelarla (valida propiedad y estado)
-        return ResponseEntity.ok(citaService.cancelarMiCita(cita.getId_cita(), user.getIdUsuario()));
+        return usuario;
     }
 }
