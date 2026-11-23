@@ -1,5 +1,110 @@
 # ApiRest_Spa
 
+API REST desarrollada con Spring Boot para gestionar usuarios, sucursales, servicios,
+terapeutas, citas y pagos de un spa.
+
+## Requisitos de instalación
+
+- Java JDK 21
+- Maven 3.9 o superior, o el Maven Wrapper incluido en el proyecto
+- MySQL 8 o compatible
+- Postman para probar los endpoints
+- Git para clonar el repositorio
+
+## Pasos de configuración
+
+1. Clona el repositorio y entra en el directorio del proyecto:
+
+```bash
+git clone https://github.com/MarioAlejandroPreciadoGuerrero/ApiRest_Spa.git
+cd ApiRest_Spa
+```
+
+2. Crea una base de datos MySQL o permite que Hibernate la cree automáticamente.
+   La configuración predeterminada intenta conectarse a `spa_db` en
+   `localhost:3306`.
+
+3. Configura las variables de entorno antes de ejecutar la API. En application.properties
+
+```properties
+URL_MYSQL="jdbc:mysql://localhost:3306/spa_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
+DB_USERNAME="root"
+DB_PASSWORD="tu_contrasena_mysql"
+JWT_SECRET="cambia_este_valor_por_un_secreto_seguro"
+JWT_EXPIRATION="86400000"
+```
+
+Las variables `URL_MYSQL`, `DB_USERNAME`, `DB_PASSWORD`, `JWT_SECRET` y
+`JWT_EXPIRATION` tienen prioridad sobre los valores configurados en
+`src/main/resources/application.properties`. Si no se configura
+`DB_PASSWORD`, se utiliza el valor definido por defecto en tu entorno local.
+
+4. Ejecuta el proyecto mediante el Maven Wrapper:
+
+```powershell
+.\mvnw.cmd spring-boot:run
+```
+
+En Linux o macOS:
+
+```bash
+./mvnw spring-boot:run
+```
+
+La API se iniciará normalmente en `http://localhost:8080`.
+
+## Credenciales de prueba
+
+Los siguientes usuarios pueden iniciar sesión una vez que hayas ejecutado los
+scripts de datos de prueba incluidos en este README:
+
+| Usuario | Contraseña |
+|---|---|
+| `UsuarioUno` | `SpaUser@2026` |
+| `UsuarioDos` | `SpaUser@2027` |
+| `UsuarioTres` | `SpaUser@2028` |
+| `UsuarioCuatro` | `SpaUser@2029` |
+| `UsuarioCinco` | `SpaUser@2030` |
+
+Los usuarios `TerapeutaUno` a `TerapeutaDiez` utilizan la contraseña
+`SpaUser@2026`.
+
+Ejemplo de inicio de sesión:
+
+```http
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "UsuarioUno",
+  "password": "SpaUser@2026"
+}
+```
+
+La respuesta contiene un JWT. Para las peticiones protegidas, envía el token
+en el encabezado:
+
+```http
+Authorization: Bearer TU_TOKEN
+```
+
+## Tecnologías utilizadas
+
+- Java 21
+- Spring Boot 4.1.2
+- Spring Web MVC
+- Spring Data JPA
+- Spring Security
+- JWT con JJWT
+- Hibernate
+- MySQL
+- Jakarta Validation
+- Lombok
+- Maven Wrapper
+- Postman
+
+## Datos de prueba
+
 ## Insertar usuarios de prueba
 
 `UserRequest` recibe `username`, `email` y `password`. El servicio guarda `username` como `nombre` y cifra la contraseña con BCrypt; por eso, al insertar directamente en la base de datos, la columna `contrasenia` debe contener un hash BCrypt, no la contraseña en texto plano.
@@ -179,4 +284,3 @@ Realiza pruebas desde postman hacia la api
 ## Notas
 - Los IDs de ejemplo (`idServicio=1`, `idTerapeuta=6`, `idSala=1`, `idMetodoPago=1`) corresponden a los datos de prueba de este README. Verifica los IDs reales con los endpoints de catálogo.
 - Las respuestas utilizan DTOs para evitar exponer hashes de contraseñas ni entidades JPA directamente.
-- `POST /api/citas` valida que el servicio, el terapeuta y la sala existan, pero no valida que el terapeuta ofrezca ese servicio ni que pertenezca a la misma sucursal que la sala.
