@@ -178,5 +178,5 @@ Realiza pruebas desde postman hacia la api
 
 ## Notas
 - Los IDs de ejemplo (`idServicio=1`, `idTerapeuta=6`, `idSala=1`, `idMetodoPago=1`) corresponden a los datos de prueba de este README. Verifica los IDs reales con los endpoints de catálogo.
-- Las respuestas de usuarios y citas incluyen el hash de la contraseña en `contrasenia`. Debemos ocultar eso
+- Las respuestas utilizan DTOs para evitar exponer hashes de contraseñas ni entidades JPA directamente.
 - `POST /api/citas` valida que el servicio, el terapeuta y la sala existan, pero no valida que el terapeuta ofrezca ese servicio ni que pertenezca a la misma sucursal que la sala.
