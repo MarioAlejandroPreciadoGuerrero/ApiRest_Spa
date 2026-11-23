@@ -19,6 +19,10 @@ public interface CitaRepository extends JpaRepository<Cita, Long> {
     @Query("SELECT c FROM Cita c WHERE c.usuario.idUsuario = :idCliente")
     List<Cita> findCitasByClienteId(@Param("idCliente") Long idCliente);
 
+    //para obtener las citas de u nterapeuta
+    @Query("SELECT c FROM Cita c WHERE c.terapeuta.idUsuario = :idTerapeuta")
+    List<Cita> findCitasByTerapeutaId(@Param("idTerapeuta") Long idTerapeuta);
+
     @Query("""
             SELECT c FROM Cita c
             WHERE c.usuario.idUsuario = :idCliente
@@ -37,5 +41,21 @@ public interface CitaRepository extends JpaRepository<Cita, Long> {
     Optional<Cita> findCitaByIdAndClienteId(
             @Param("idCita") Long idCita,
             @Param("idCliente") Long idCliente
+    );
+    //para validar si en una sala actual existe una cita que pueda solapar la sala
+    //tenga el id de la sala, el estado sea diferente de cancelada
+    //
+    @Query("""
+            SELECT COUNT(c) > 0 FROM Cita c
+            WHERE c.sala.id_sala = :idSala
+              AND c.estado <> :estadoCancelada
+              AND c.fecha_hora_inicio < :fechaHoraFin
+              AND c.fecha_hora_fin > :fechaHoraInicio
+            """)
+    boolean existeCitaQueSolapaSala(
+            @Param("idSala") Long idSala,
+            @Param("fechaHoraInicio") java.time.LocalDateTime fechaHoraInicio,
+            @Param("fechaHoraFin") java.time.LocalDateTime fechaHoraFin,
+            @Param("estadoCancelada") EstadoCita estadoCancelada
     );
 }

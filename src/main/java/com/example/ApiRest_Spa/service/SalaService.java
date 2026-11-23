@@ -1,12 +1,15 @@
 package com.example.ApiRest_Spa.service;
 
 import com.example.ApiRest_Spa.dto.SalaResponse;
+import com.example.ApiRest_Spa.ENUM.EstadoCita;
 import com.example.ApiRest_Spa.exception.ResourceNotFoundException;
 import com.example.ApiRest_Spa.model.Sala;
+import com.example.ApiRest_Spa.repository.CitaRepository;
 import com.example.ApiRest_Spa.repository.SalaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -14,6 +17,9 @@ public class SalaService {
 
     @Autowired
     private SalaRepository salaRepository;
+
+    @Autowired
+    private CitaRepository citaRepository;
 
     public Sala obtenerSalaPorId(Long id){
         return salaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Sala no encontrada"));
@@ -39,6 +45,15 @@ public class SalaService {
             .idSucursal(s.getSucursal() != null ? s.getSucursal().getId_sucursal() : null)
             .nombreSucursal(s.getSucursal() != null ? s.getSucursal().getNombre() : null)
             .build();
-}
+    }
+
+    public boolean tieneCitaEn(Long idSala, LocalDateTime fechaHoraInicio,
+                               LocalDateTime fechaHoraFin){
+        return citaRepository.existeCitaQueSolapaSala(
+                idSala,
+                fechaHoraInicio,
+                fechaHoraFin,
+                EstadoCita.CANCELADA);
+    }
 
 }

@@ -33,6 +33,9 @@ public class CitaService {
     private final UsuarioRepository usuarioRepository;
 
     @Autowired
+    private TerapeutaService terapeutaService;
+
+    @Autowired
     public CitaService(CitaRepository citaRepository, ServicioRepository servicioRepository,
                        TerapeutaRepository terapeutaRepository, SalaRepository salaRepository,
                        UsuarioRepository usuarioRepository) {
@@ -77,6 +80,35 @@ public class CitaService {
                 .orElseThrow(() -> new ResourceNotFoundException("Terapeuta no encontrado"));
         Sala sala = salaRepository.findById(request.getIdSala())
                 .orElseThrow(() -> new ResourceNotFoundException("Sala no encontrada"));
+
+        //ver si el terapeuta ofrece el servicio solicitado con una función lambda
+        boolean ofreceServicio = terapeuta.getServicios() != null
+                && terapeuta.getServicios().stream()
+                        .anyMatch(servicioTerapeuta ->
+                                Objects.equals(servicioTerapeuta.getId(), servicio.getId()));
+        if (!ofreceServicio) {
+            throw new BusinessRulesException("El terapeuta seleccionado no ofrece el servicio solicitado");
+        }
+        //tambien ver que el terapeuta pertenece a la sucursal donde esta la sala solicitada
+        if (terapeuta.getSucursal() == null
+                || sala.getSucursal() == null
+                || !Objects.equals(
+                        terapeuta.getSucursal().getId_sucursal(),
+                        sala.getSucursal().getId_sucursal())) {
+            throw new BusinessRulesException(
+                    "El terapeuta debe pertenecer a la sucursal correspondiente a la sala seleccionada");
+        }
+        if(terapeutaService.tieneCitaEnHora(request.getFechaHoraInicio(), request.getIdTerapeuta())){
+            throw new BusinessRulesException("El terapeuta tiene otra cita en esa hora");
+        }
+        //validar qe no haya una cita en esa sala a esa hora
+        if (citaRepository.existeCitaQueSolapaSala(
+                sala.getId_sala(),
+                request.getFechaHoraInicio(),
+                request.getFechaHoraFin(),
+                EstadoCita.CANCELADA)) {
+            throw new BusinessRulesException("La sala ya tiene una cita en el horario solicitado");
+        }
 
         Cita cita = Cita.builder()
                 .usuario(usuario)
@@ -131,6 +163,10 @@ public class CitaService {
             .idSala(c.getSala() != null ? c.getSala().getId_sala() : null)
             .numeroSala(c.getSala() != null ? c.getSala().getNumero_sala() : null)
             .build();
-}
+    }
+
+    public List<Cita> getCitasByTerapeuta(Long idTerapeuta){
+        return this.citaRepository.findCitasByTerapeutaId(idTerapeuta);
+    }
 
 }

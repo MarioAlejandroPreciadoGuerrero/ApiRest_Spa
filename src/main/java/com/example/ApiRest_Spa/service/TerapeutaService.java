@@ -2,17 +2,23 @@ package com.example.ApiRest_Spa.service;
 
 import com.example.ApiRest_Spa.dto.TerapeutaResponse;
 import com.example.ApiRest_Spa.exception.ResourceNotFoundException;
+import com.example.ApiRest_Spa.model.Cita;
 import com.example.ApiRest_Spa.model.Terapeuta;
+import com.example.ApiRest_Spa.repository.CitaRepository;
 import com.example.ApiRest_Spa.repository.TerapeutaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class TerapeutaService {
     @Autowired
     private TerapeutaRepository terapeutaRepository;
+
+    @Autowired
+    private CitaRepository citaRepository;
 
     public TerapeutaService(TerapeutaRepository terapeutaRepository) {
         this.terapeutaRepository = terapeutaRepository;
@@ -53,5 +59,17 @@ public class TerapeutaService {
             .nombreSucursal(t.getSucursal() != null ? t.getSucursal().getNombre() : null)
             .fechaContratacion(t.getFecha_contratacion())
             .build();
-}
+    }
+
+    public boolean tieneCitaEnHora(LocalDateTime horaInicio, Long idTerapeuta){
+        List<Cita> citas = citaRepository.findCitasByTerapeutaId(idTerapeuta);
+        boolean tieneCita = false;
+        for(Cita c : citas){
+            if(c.getFecha_hora_inicio() == horaInicio){
+                tieneCita = true;
+                break;
+            }
+        }
+        return tieneCita;
+    }
 }

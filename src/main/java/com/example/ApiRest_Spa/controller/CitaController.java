@@ -6,8 +6,7 @@ import com.example.ApiRest_Spa.exception.ResourceNotFoundException;
 import com.example.ApiRest_Spa.exception.UnauthorizedException;
 import com.example.ApiRest_Spa.model.Cita;
 import com.example.ApiRest_Spa.model.Usuario;
-import com.example.ApiRest_Spa.service.CitaService;
-import com.example.ApiRest_Spa.service.UsuarioService;
+import com.example.ApiRest_Spa.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +25,15 @@ public class CitaController {
 
     @Autowired
     private UsuarioService usuarioService;
+
+    @Autowired
+    private TerapeutaService terapeutaService;
+
+    @Autowired
+    private SucursalService sucursalService;
+
+    @Autowired
+    private ServicioService servicioService;
 
     @GetMapping("/mine")
     public ResponseEntity<List<CitaResponse>> obtenerCitasUsuario(HttpServletRequest request) {
