@@ -23,6 +23,21 @@ public interface CitaRepository extends JpaRepository<Cita, Long> {
     @Query("SELECT c FROM Cita c WHERE c.terapeuta.id_terapeuta = :idTerapeuta")
     List<Cita> findCitasByTerapeutaId(@Param("idTerapeuta") Long idTerapeuta);
 
+    //validar que el terapeuta esté disponible en un rango de tiempo
+    @Query("""
+            SELECT COUNT(c) > 0 FROM Cita c
+            WHERE c.terapeuta.id_terapeuta = :idTerapeuta
+              AND c.estado <> :estadoCancelada
+              AND c.fecha_hora_inicio < :fechaHoraFin
+              AND c.fecha_hora_fin > :fechaHoraInicio
+            """)
+    boolean existeCitaQueSolapaTerapeuta(
+            @Param("idTerapeuta") Long idTerapeuta,
+            @Param("fechaHoraInicio") java.time.LocalDateTime fechaHoraInicio,
+            @Param("fechaHoraFin") java.time.LocalDateTime fechaHoraFin,
+            @Param("estadoCancelada") EstadoCita estadoCancelada
+    );
+
     @Query("""
             SELECT c FROM Cita c
             WHERE c.usuario.idUsuario = :idCliente

@@ -104,7 +104,7 @@ public class CitaService {
                     "El terapeuta debe pertenecer a la sucursal correspondiente a la sala seleccionada");
         }
         //validar que el terapeuta este disponible
-        if(terapeutaService.tieneCitaEnHora(request.getFechaHoraInicio(), request.getIdTerapeuta())){
+        if(terapeutaService.tieneCitaEnHora(request.getFechaHoraInicio(), request.getFechaHoraFin(), request.getIdTerapeuta())){
             throw new BusinessRulesException("El terapeuta tiene otra cita en esa hora");
         }
         //validar qe no haya una cita en esa sala a esa hora

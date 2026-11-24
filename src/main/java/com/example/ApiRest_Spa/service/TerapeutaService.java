@@ -1,8 +1,8 @@
 package com.example.ApiRest_Spa.service;
 
+import com.example.ApiRest_Spa.ENUM.EstadoCita;
 import com.example.ApiRest_Spa.dto.TerapeutaResponse;
 import com.example.ApiRest_Spa.exception.ResourceNotFoundException;
-import com.example.ApiRest_Spa.model.Cita;
 import com.example.ApiRest_Spa.model.Terapeuta;
 import com.example.ApiRest_Spa.repository.CitaRepository;
 import com.example.ApiRest_Spa.repository.TerapeutaRepository;
@@ -61,13 +61,8 @@ public class TerapeutaService {
             .build();
     }
 
-    public boolean tieneCitaEnHora(LocalDateTime horaInicio, Long idTerapeuta){
-        List<Cita> citas = citaRepository.findCitasByTerapeutaId(idTerapeuta);
-        for(Cita c : citas){
-            if(c.getFecha_hora_inicio() == horaInicio){
-                return true;
-            }
-        }
-        return false;
+    public boolean tieneCitaEnHora(LocalDateTime horaInicio, LocalDateTime horaFin, Long idTerapeuta){
+        return citaRepository.existeCitaQueSolapaTerapeuta(
+                idTerapeuta, horaInicio, horaFin, EstadoCita.CANCELADA);
     }
 }
